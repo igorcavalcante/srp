@@ -5,7 +5,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import java.util.Properties;
 
-public class LoadSSLConnector {
+public class SSLConnectorLoader {
 
     public ServerConnector load(Server server, Properties properties) {
         String keyStoreName = properties.getProperty("keyStoreName");

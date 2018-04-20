@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ExampleServers {
 
-    public static void main(String... args) throws Exception {
+    public List<Server> load() throws Exception {
         Properties properties = new ConfigLoader().load();
 
         List<String> serversProperties = properties
@@ -43,8 +43,7 @@ public class ExampleServers {
             }
         });
 
-
-        servers.get(0).join();
+        return servers;
     }
 
 }

@@ -9,7 +9,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import java.util.Properties;
 import java.util.stream.Stream;
 
-public class ProxyLoader {
+public class ContextsLoader {
 
     public ContextHandler[] load(Properties properties) {
         Stream<String> propertiesAsStream = properties.stringPropertyNames().stream();
