@@ -11,6 +11,7 @@ public class LoadSSLConnector {
         String keyStoreName = properties.getProperty("keyStoreName");
         String keyStorePassword = properties.getProperty("keyStorePassword");
         String keyManagerPassword = properties.getProperty("keyManagerPassword");
+        String proxyServerPort = properties.getProperty("proxyServerPort");
         String keyStorePath = SrpProxy.class.getClassLoader().getResource(keyStoreName).getPath();
 
         HttpConfiguration https = new HttpConfiguration();
@@ -25,7 +26,7 @@ public class LoadSSLConnector {
             server,
             new SslConnectionFactory(sslContextFactory, "http/1.1"),
             new HttpConnectionFactory(https));
-        sslConnector.setPort(8489);
+        sslConnector.setPort(new Integer(proxyServerPort));
 
         return sslConnector;
     }
