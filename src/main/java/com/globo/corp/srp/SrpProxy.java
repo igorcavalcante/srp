@@ -9,25 +9,17 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
-public class SrpProxyJetty {
+import java.util.Properties;
+
+public class SrpProxy {
 
     public static void main(String[] args) throws Exception {
 
+        Properties properties = new ConfigLoader().load();
         Server server = new Server();
 
-        HttpConfiguration https = new HttpConfiguration();
-        https.addCustomizer(new SecureRequestCustomizer());
-        SslContextFactory sslContextFactory = new SslContextFactory();
-        sslContextFactory.setKeyStorePath("/tmp/olimpo-server-ks.jks");
-        sslContextFactory.setKeyStorePassword("123456");
-        sslContextFactory.setKeyManagerPassword("");
-        ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory, "http/1.1"),
-                new HttpConnectionFactory(https));
-        sslConnector.setPort(8489);
+        ServerConnector sslConnector = new LoadSSLConnector().load(server, properties);
         server.setConnectors(new Connector[] { sslConnector });
-
-        ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
 
         ContextHandler context1 = new ContextHandler();
         context1.setContextPath("/");
@@ -45,6 +37,8 @@ public class SrpProxyJetty {
         proxyServlet.setInitParameter("proxyTo", "http://test2.olimpo:8082/");
         proxyServlet.setInitParameter("Prefix", "/");
         context.addServlet(proxyServlet, "/*");
+
+        ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         contextHandlerCollection.setHandlers(new Handler[] {context1, context2});
 
         server.setHandler(contextHandlerCollection);
