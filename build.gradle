@@ -2,6 +2,9 @@ group 'com.globo.corp'
 version '0.1'
 
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.globo.corp.srp.App"
 
 sourceCompatibility = 1.8
 
